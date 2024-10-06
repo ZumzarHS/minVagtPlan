@@ -15,20 +15,21 @@ namespace minVagtPlan.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult AddEmployee()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(AddEmployeeViewModel viewModel)
+        public async Task<IActionResult> AddEmployee(AddEmployeeViewModel viewModel)
         {
             try
             {
                 var employee = new Employee
                 {
+                    EmployeeId = Guid.NewGuid(),
                     FirstName = viewModel.FirstName,
                     LastName = viewModel.LastName,
-                    Role = viewModel.Role
+                    Role = viewModel.Role,
                 };
                 await dbContext.Employees.AddAsync(employee);
                 await dbContext.SaveChangesAsync();
