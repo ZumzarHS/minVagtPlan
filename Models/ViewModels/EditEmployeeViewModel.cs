@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace minVagtPlan.Models.ViewModels
 {
-    public class AddEmployeeViewModel
+    public class EditEmployeeViewModel
     {
+        public Guid EmployeeId { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
