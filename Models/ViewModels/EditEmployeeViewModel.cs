@@ -12,5 +12,7 @@ namespace minVagtPlan.Models.ViewModels
         public string LastName { get; set; }
         [Required]
         public string Role { get; set; }
+
+        public List<Guid> ShiftIds { get; set; } = new List<Guid>();
     }
 }

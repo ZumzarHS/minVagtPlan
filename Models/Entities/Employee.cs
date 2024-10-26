@@ -13,5 +13,8 @@
                 return $"{FirstName} {LastName}";
             }
         }
+
+        public ICollection<ShiftEmployee> ShiftEmployees { get; set; } = new List<ShiftEmployee>();
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using minVagtPlan.Data;
 
@@ -11,9 +12,11 @@ using minVagtPlan.Data;
 namespace minVagtPlan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241015204901_ShiftClass")]
+    partial class ShiftClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,50 +63,6 @@ namespace minVagtPlan.Migrations
                     b.HasKey("ShiftId");
 
                     b.ToTable("Shifts");
-                });
-
-            modelBuilder.Entity("minVagtPlan.Models.Entities.ShiftEmployee", b =>
-                {
-                    b.Property<Guid>("ShiftId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ShiftId", "EmployeeId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("ShiftEmployee");
-                });
-
-            modelBuilder.Entity("minVagtPlan.Models.Entities.ShiftEmployee", b =>
-                {
-                    b.HasOne("minVagtPlan.Models.Entities.Employee", "Employee")
-                        .WithMany("ShiftEmployees")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("minVagtPlan.Models.Entities.Shift", "Shift")
-                        .WithMany("ShiftEmployees")
-                        .HasForeignKey("ShiftId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Shift");
-                });
-
-            modelBuilder.Entity("minVagtPlan.Models.Entities.Employee", b =>
-                {
-                    b.Navigation("ShiftEmployees");
-                });
-
-            modelBuilder.Entity("minVagtPlan.Models.Entities.Shift", b =>
-                {
-                    b.Navigation("ShiftEmployees");
                 });
 #pragma warning restore 612, 618
         }
