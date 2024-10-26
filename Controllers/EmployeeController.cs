@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using minVagtPlan.Data;
 using minVagtPlan.Models.Entities;
@@ -7,11 +8,11 @@ using NuGet.Protocol;
 
 namespace minVagtPlan.Controllers
 {
-    public class AdminController : Controller
+    public class EmployeeController : Controller
     {
         private readonly ApplicationDbContext dbContext;
 
-        public AdminController(ApplicationDbContext dbContext)
+        public EmployeeController(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -46,7 +47,10 @@ namespace minVagtPlan.Controllers
         [HttpGet]
         public async Task<IActionResult> EditEmployee(Guid id)
         {
-            var employee = await dbContext.Employees.FindAsync(id);
+            var employee = await dbContext.Employees
+                .Include(e => e.ShiftEmployees)
+                .FirstOrDefaultAsync(e => e.EmployeeId == id);
+
             if (employee == null)
             {
                 return NotFound();
@@ -56,8 +60,14 @@ namespace minVagtPlan.Controllers
                 EmployeeId = employee.EmployeeId,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Role = employee.Role
+                Role = employee.Role,
+                ShiftIds = employee.ShiftEmployees.Select(se => se.ShiftId).ToList()
             };
+        //    var assignedShifts = await dbContext.Shifts
+        //.Where(s => s.ShiftEmployees.Any(se => se.EmployeeId == id))
+        //.ToListAsync();
+
+            ViewBag.Shifts = new MultiSelectList(await dbContext.Shifts.ToListAsync(), "ShiftId", "ShiftId");
 
             return View(viewModel);
         }
@@ -65,21 +75,43 @@ namespace minVagtPlan.Controllers
         [HttpPost]
         public async Task<IActionResult> EditEmployee(EditEmployeeViewModel viewModel)
         {
-            var employee = await dbContext.Employees.FindAsync(viewModel.EmployeeId);
-            if (!ModelState.IsValid)
+            try
             {
-                return View(viewModel);  // Return to the view if there are validation errors
-            }
+                var employee = await dbContext.Employees
+                 .Include(e => e.ShiftEmployees)
+                 .FirstOrDefaultAsync(e => e.EmployeeId == viewModel.EmployeeId);
 
-            if (employee is not null)
-            {
-                employee.FirstName = viewModel.FirstName;
-                employee.LastName = viewModel.LastName;
-                employee.Role = viewModel.Role;
-                await dbContext.SaveChangesAsync();
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Shifts = new MultiSelectList(await dbContext.Shifts.ToListAsync(), "ShiftId", "ShiftId");
+                    return View(viewModel); 
+                }
+
+                if (employee is not null)
+                {
+                    employee.FirstName = viewModel.FirstName;
+                    employee.LastName = viewModel.LastName;
+                    employee.Role = viewModel.Role;
+                    // Update shifts
+                    employee.ShiftEmployees.Clear();
+                    foreach (var shiftId in viewModel.ShiftIds)
+                    {
+                        employee.ShiftEmployees.Add(new ShiftEmployee
+                        {
+                            EmployeeId = employee.EmployeeId,
+                            ShiftId = shiftId
+                        });
+                    }
+                    await dbContext.SaveChangesAsync();
+                }
+
+                return RedirectToAction("ListEmployee", "Employee");
             }
-            
-            return RedirectToAction("ListEmployee", "Admin");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                    return StatusCode(500, "Internal server error");
+            }
         }
         [HttpGet]
         public async Task<IActionResult> ListEmployee()
@@ -103,7 +135,7 @@ namespace minVagtPlan.Controllers
             {
                 return NotFound();
             }
-                return RedirectToAction("ListEmployee", "Admin");
+                return RedirectToAction("ListEmployee", "Employee");
         }
     }
 }

@@ -6,7 +6,8 @@
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
-        // public Guid EmployeeId { get; set; }
-       // public virtual Employee Employee { get; set; }
+        // Foreign key for Employee
+
+        public ICollection<ShiftEmployee> ShiftEmployees { get; set; } = new List<ShiftEmployee>();
     }
 }

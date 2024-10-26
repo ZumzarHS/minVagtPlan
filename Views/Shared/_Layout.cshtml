@@ -28,8 +28,10 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Admin</a>
                             <div class="dropdown-menu">
-                                 <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="ListEmployee">List of Employees</a>
-                                 <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="AddEmployee">Add Employee</a>
+                                 <a class="dropdown-item" asp-controller="Employee" asp-action="ListEmployee">List of Employees</a>
+                                 <a class="dropdown-item" asp-controller="Employee" asp-action="AddEmployee">Add Employee</a>
+                                <a class="dropdown-item" asp-controller="Shift" asp-action="AddShift">Add Shift</a>
+                                <a class="dropdown-item" asp-controller="Shift" asp-action="ListShifts">List of Shifts</a> 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Separated link</a>
                             </div>
