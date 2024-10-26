@@ -15,7 +15,9 @@
             @foreach (var shift in Model)
             {
                 <tr>
-                    <td>@shift.ShiftId</td>
+                <td>
+                    <a asp-controller="Assignment" asp-action="AssignEmployees" asp-route-id="@shift.ShiftId">@shift.ShiftId</a>
+                </td>
                     <td>@shift.StartTime</td>
                     <td>@shift.EndTime</td>
                 <td>
