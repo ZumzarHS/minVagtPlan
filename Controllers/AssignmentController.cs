@@ -146,5 +146,22 @@ namespace minVagtPlan.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+        [HttpGet]
+        public IActionResult GetShifts()
+        {
+            var events = dbContext.Shifts
+                .Include(shift => shift.ShiftEmployees)
+                .ThenInclude(se => se.Employee)
+                .Select(shift => new
+                {
+                    id = shift.ShiftId,
+                    title = string.Join(", ", shift.ShiftEmployees.Select(se => $"{se.Employee.FirstName} {se.Employee.LastName}")),
+                    start = shift.StartTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    end = shift.EndTime.ToString("yyyy-MM-ddTHH:mm:ss")
+                }).ToList();
+
+            return Json(events);
+        }
+
     }
 }

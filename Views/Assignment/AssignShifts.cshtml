@@ -23,27 +23,6 @@
     </div>
 </form>
 
- @* <h2>Assigned Shifts</h2>
- <table class="table">
-     <thead>
-         <tr>
-             <th>Shift ID</th>
-             <th>Start Time</th>
-             <th>End Time</th>
-         </tr>
-     </thead>
-     <tbody>
-         @foreach (var shift in Model.AssignedShifts)
-         {
-             <tr>
-                 <td>@shift.ShiftId</td>
-                 <td>@shift.StartTime</td>
-                 <td>@shift.EndTime</td>
-             </tr>
-         }
-     </tbody>
- </table> *@
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
