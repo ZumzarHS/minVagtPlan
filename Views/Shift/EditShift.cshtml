@@ -1,1 +1,33 @@
-﻿<h2>Overview</h2>
+﻿@model minVagtPlan.Models.ViewModels.EditShiftViewModel
+
+<h2>Edit Shift</h2>
+
+@if (Model is null)
+{
+    <p>No shift was found!</p>
+}
+else {
+<form method="post">
+    <input type="hidden" asp-for="ShiftId">
+
+    <div class="form-group">
+        <label>Start Time</label>
+        <input type="datetime-local" asp-for="StartTime" class="form-control" />
+        <span asp-validation-for="StartTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>End Time</label>
+        <input type="datetime-local" asp-for="EndTime" class="form-control" />
+        <span asp-validation-for="EndTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

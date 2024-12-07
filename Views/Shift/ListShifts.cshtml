@@ -1,5 +1,9 @@
 ﻿@model List<minVagtPlan.Models.Entities.Shift>
 
+@{
+    var sortedShifts = Model.OrderBy(shift => shift.StartTime).ToList();
+}
+
     <h1>All Shifts</h1>
 
     <table class="table">
@@ -12,7 +16,7 @@
         </thead>
 
         <tbody>
-            @foreach (var shift in Model)
+            @foreach (var shift in sortedShifts)
             {
                 <tr>
                 <td>
