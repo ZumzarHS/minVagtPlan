@@ -17,7 +17,7 @@ namespace minVagtPlan.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -42,7 +42,7 @@ namespace minVagtPlan.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("minVagtPlan.Models.Entities.Shift", b =>
@@ -59,7 +59,7 @@ namespace minVagtPlan.Migrations
 
                     b.HasKey("ShiftId");
 
-                    b.ToTable("Shifts");
+                    b.ToTable("Shifts", (string)null);
                 });
 
             modelBuilder.Entity("minVagtPlan.Models.Entities.ShiftEmployee", b =>
@@ -74,7 +74,7 @@ namespace minVagtPlan.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("ShiftEmployee");
+                    b.ToTable("ShiftEmployee", (string)null);
                 });
 
             modelBuilder.Entity("minVagtPlan.Models.Entities.ShiftEmployee", b =>

@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using minVagtPlan.Data;
+using Microsoft.AspNetCore.Identity;
+using minVagtPlan.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +14,17 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
 });
 
-// Add Entity Framework Core and configure the SQL Server database context.
+// Configure ApplicationDbContext for domain entities
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("myVagtPlanDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("myVagtPlanDb")));
 
-//// Add ASP.NET Core Identity services
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>() // You can replace IdentityUser with a custom user class if needed
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders(); // This adds default token providers for things like password reset
+// Configure AppDbContext for Identity
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("identityDb")));
+
+// Add ASP.NET Core Identity services
+builder.Services.AddDefaultIdentity<VagtPlanUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
@@ -36,12 +41,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//// Enable authentication and authorization
-//app.UseAuthentication(); // This middleware must be placed before UseAuthorization
+// Enable authentication and authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
