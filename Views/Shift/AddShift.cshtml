@@ -1,4 +1,8 @@
 ﻿@model minVagtPlan.Models.ViewModels.AddShiftViewModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+
 
 <h2>Add Shift</h2>
 

@@ -24,9 +24,29 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add ASP.NET Core Identity services
 builder.Services.AddDefaultIdentity<VagtPlanUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
+
+// Seed the database with roles and an admin user
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedData.Initialize(services);
+}
+
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 403)
+    {
+        context.HttpContext.Response.Redirect("/Identity/Account/AccessDenied");
+    }
+    else if (context.HttpContext.Response.StatusCode == 401)
+    {
+        context.HttpContext.Response.Redirect("/Identity/Account/Login");
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
