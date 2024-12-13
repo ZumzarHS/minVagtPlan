@@ -18,14 +18,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("myVagtPlanDb")));
 
-// Configure AppDbContext for Identity
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("identityDb")));
-
 // Add ASP.NET Core Identity services
 builder.Services.AddDefaultIdentity<VagtPlanUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 

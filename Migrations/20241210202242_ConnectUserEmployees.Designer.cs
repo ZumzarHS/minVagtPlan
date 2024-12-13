@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using minVagtPlan.Data;
 
 #nullable disable
 
-namespace minVagtPlan.Migrations.AppDb
+namespace minVagtPlan.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20241210202242_ConnectUserEmployees")]
+    partial class ConnectUserEmployees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,6 +227,68 @@ namespace minVagtPlan.Migrations.AppDb
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("minVagtPlan.Models.Entities.Employee", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("EmployeeId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("minVagtPlan.Models.Entities.Shift", b =>
+                {
+                    b.Property<Guid>("ShiftId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ShiftId");
+
+                    b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("minVagtPlan.Models.Entities.ShiftEmployee", b =>
+                {
+                    b.Property<Guid>("ShiftId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ShiftId", "EmployeeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("ShiftEmployee");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -273,6 +338,46 @@ namespace minVagtPlan.Migrations.AppDb
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("minVagtPlan.Models.Entities.Employee", b =>
+                {
+                    b.HasOne("minVagtPlan.Areas.Identity.Data.VagtPlanUser", "User")
+                        .WithOne()
+                        .HasForeignKey("minVagtPlan.Models.Entities.Employee", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("minVagtPlan.Models.Entities.ShiftEmployee", b =>
+                {
+                    b.HasOne("minVagtPlan.Models.Entities.Employee", "Employee")
+                        .WithMany("ShiftEmployees")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("minVagtPlan.Models.Entities.Shift", "Shift")
+                        .WithMany("ShiftEmployees")
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Shift");
+                });
+
+            modelBuilder.Entity("minVagtPlan.Models.Entities.Employee", b =>
+                {
+                    b.Navigation("ShiftEmployees");
+                });
+
+            modelBuilder.Entity("minVagtPlan.Models.Entities.Shift", b =>
+                {
+                    b.Navigation("ShiftEmployees");
                 });
 #pragma warning restore 612, 618
         }

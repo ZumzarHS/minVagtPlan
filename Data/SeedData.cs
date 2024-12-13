@@ -13,7 +13,7 @@ namespace minVagtPlan.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<VagtPlanUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string[] roleNames = { "Admin", "User" };
+            string[] roleNames = { "Admin", "Employee" };
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
