@@ -5,10 +5,10 @@ namespace minVagtPlan.Models.ViewModels
     public class AddEmployeeViewModel
     {
         [Required]
-        public string FirstName { get; set; }
+        public required string FirstName { get; set; }
         [Required]
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
         [Required]
-        public string Role { get; set; }
+        public required string Role { get; set; }
     }
 }
