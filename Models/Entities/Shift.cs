@@ -3,9 +3,9 @@
     public class Shift
     {
         public Guid ShiftId { get; set; }
-        public DateTime StartTime { get; set; }
+        public required DateTime StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public required DateTime EndTime { get; set; }
 
         public string Title
         {
