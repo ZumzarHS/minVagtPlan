@@ -12,8 +12,8 @@ using minVagtPlan.Data;
 namespace minVagtPlan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241210202242_ConnectUserEmployees")]
-    partial class ConnectUserEmployees
+    [Migration("20250715230222_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
