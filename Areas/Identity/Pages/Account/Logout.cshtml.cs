@@ -13,6 +13,7 @@ using minVagtPlan.Areas.Identity.Data;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = "Admin,Employee")]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<VagtPlanUser> _signInManager;

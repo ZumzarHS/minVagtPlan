@@ -23,6 +23,22 @@ builder.Services.AddDefaultIdentity<VagtPlanUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("EmployeeOnly", policy => policy.RequireRole("Employee"));
+    options.AddPolicy("AdminOrEmployee", policy => policy.RequireRole("Admin", "Employee"));
+});
+
+// Configure authorization policies
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Employee", "AdminOnly");
+    options.Conventions.AuthorizeFolder("/Shift", "AdminOnly");
+    options.Conventions.AuthorizeFolder("/Assignment", "AdminOnly");
+    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage", "AdminOnly");
+});
+
 var app = builder.Build();
 
 // Seed the database with roles and an admin user
