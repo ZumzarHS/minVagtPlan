@@ -36,7 +36,7 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Employee", "AdminOnly");
     options.Conventions.AuthorizeFolder("/Shift", "AdminOnly");
     options.Conventions.AuthorizeFolder("/Assignment", "AdminOnly");
-    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage", "AdminOnly");
+    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage", "AdminOrEmployee");
 });
 
 var app = builder.Build();

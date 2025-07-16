@@ -24,6 +24,7 @@ using minVagtPlan.Models.Entities;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles ="Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<VagtPlanUser> _signInManager;
