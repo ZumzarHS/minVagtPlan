@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using minVagtPlan.Areas.Identity.Data
+@inject UserManager<VagtPlanUser> UserManager
+@inject SignInManager<VagtPlanUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,19 +30,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Admin</a>
                             <div class="dropdown-menu">
                                  <a class="dropdown-item" asp-controller="Employee" asp-action="ListEmployee">List of Employees</a>
-                                 <a class="dropdown-item" asp-controller="Employee" asp-action="AddEmployee">Add Employee</a>
+                                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Add Employee</a>
                                 <a class="dropdown-item" asp-controller="Shift" asp-action="AddShift">Add Shift</a>
                                 <a class="dropdown-item" asp-controller="Shift" asp-action="ListShifts">List of Shifts</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Separated link</a>
                             </div>
-                        </li>
-
+                            </li>
+                        }
                     </ul>
+                  <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>

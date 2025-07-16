@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using minVagtPlan.Areas.Identity.Data;
 using minVagtPlan.Models.Entities;
 
 namespace minVagtPlan.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<VagtPlanUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -30,6 +32,12 @@ namespace minVagtPlan.Data
                 .HasOne(se => se.Employee)
                 .WithMany(e => e.ShiftEmployees)
                 .HasForeignKey(se => se.EmployeeId);
+
+            // Configure the one-to-one relationship between Employee and VagtPlanUser
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.User)
+                .WithOne()
+                .HasForeignKey<Employee>(e => e.UserId);
         }
     }
 }

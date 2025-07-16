@@ -3,10 +3,12 @@ using minVagtPlan.Data;
 using Microsoft.EntityFrameworkCore;
 using minVagtPlan.Models.ViewModels;
 using minVagtPlan.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace minVagtPlan.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ShiftController : Controller
     {
         private readonly ApplicationDbContext dbContext;
