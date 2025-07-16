@@ -18,6 +18,7 @@ using minVagtPlan.Areas.Identity.Data;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<VagtPlanUser> _signInManager;

@@ -15,6 +15,7 @@ using minVagtPlan.Areas.Identity.Data;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<VagtPlanUser> _userManager;

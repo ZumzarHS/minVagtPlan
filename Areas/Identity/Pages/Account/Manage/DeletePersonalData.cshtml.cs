@@ -2,17 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using minVagtPlan.Areas.Identity.Data;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = "Admin")]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<VagtPlanUser> _userManager;

@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +13,7 @@ using minVagtPlan.Areas.Identity.Data;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = "Admin,Employee")]
     public class TwoFactorAuthenticationModel : PageModel
     {
         private readonly UserManager<VagtPlanUser> _userManager;
