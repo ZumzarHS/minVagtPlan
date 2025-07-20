@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using minVagtPlan.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = "Admin,Employee")]
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<VagtPlanUser> _userManager;

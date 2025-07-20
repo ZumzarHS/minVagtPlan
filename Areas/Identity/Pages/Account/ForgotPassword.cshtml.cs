@@ -17,6 +17,7 @@ using minVagtPlan.Areas.Identity.Data;
 
 namespace minVagtPlan.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<VagtPlanUser> _userManager;
